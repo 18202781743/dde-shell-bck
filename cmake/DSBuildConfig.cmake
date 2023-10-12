@@ -1,18 +1,20 @@
 include(CMakeParseArguments)
 
 function(ds_build_package)
-    set(oneValueArgs PACKAGE TARGET)
-    set(multiValueArgs SOURCES)
+    set(oneValueArgs PACKAGE TARGET PACKAGE_ROOT_DIR)
     cmake_parse_arguments(_config "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
+    set(package_root_dir ${CMAKE_CURRENT_SOURCE_DIR}/package)
+    if (DEFINED _config_PACKAGE_ROOT_DIR)
+        set(package_root_dir ${CMAKE_CURRENT_SOURCE_DIR}/${_config_PACKAGE_ROOT_DIR})
+    endif()
+    file(GLOB_RECURSE package_files ${package_root_dir}/*)
     add_custom_target(${_config_PACKAGE}_package ALL
-        SOURCES ${_config_SOURCES}
+        SOURCES ${package_files}
     )
     set(package_dirs ${PROJECT_BINARY_DIR}/packages/${_config_PACKAGE}/)
-    set(copy_files ${_config_SOURCES})
     add_custom_command(TARGET ${_config_PACKAGE}_package
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${package_dirs}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${copy_files} ${package_dirs}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${package_root_dir} ${package_dirs}
     )
 
     if (DEFINED _config_TARGET)

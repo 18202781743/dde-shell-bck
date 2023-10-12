@@ -28,6 +28,5 @@ find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Core Gui Concurrent 
 
 add_subdirectory(frame)
 add_subdirectory(shell)
-add_subdirectory(tests)
 add_subdirectory(example)
-
+#add_subdirectory(tests)

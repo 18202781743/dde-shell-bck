@@ -48,6 +48,7 @@ QObject *DQmlEngine::beginCreate()
     auto component = new QQmlComponent(engine(), this);
     component->loadUrl(d->m_applet->url());
     if (component->isError()) {
+        qCWarning(dsLog()) << "Loading url failed" << component->errorString();
         return nullptr;
     }
     d->m_component = component;

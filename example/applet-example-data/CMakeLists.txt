@@ -13,9 +13,4 @@ target_link_libraries(ds-example-applet-data PRIVATE
     dde-shell-frame
 )
 
-ds_build_package(PACKAGE org.deepin.ds.applet-example-data
-TARGET ds-example-applet-data
-SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/metadata.json
-    ${CMAKE_CURRENT_SOURCE_DIR}/main.qml
-)
+ds_build_package(PACKAGE org.deepin.ds.applet-example-data TARGET ds-example-applet-data)

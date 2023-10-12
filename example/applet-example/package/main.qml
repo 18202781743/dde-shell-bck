@@ -6,6 +6,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 
 import org.deepin.ds 1.0
+import "control"
 
 AppletItem {
     width: 100
@@ -13,7 +14,7 @@ AppletItem {
     Rectangle {
         anchors.fill: parent
         color: "green"
-        Text {
+        TextEx {
             anchors.centerIn: parent
             text: "Hello world"
         }

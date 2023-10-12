@@ -13,9 +13,4 @@ target_link_libraries(ds-corona-example PRIVATE
     dde-shell-frame
 )
 
-ds_build_package(PACKAGE org.deepin.ds.corona-example
-TARGET ds-corona-example
-SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/metadata.json
-    ${CMAKE_CURRENT_SOURCE_DIR}/main.qml
-)
+ds_build_package(PACKAGE org.deepin.ds.corona-example TARGET ds-corona-example)

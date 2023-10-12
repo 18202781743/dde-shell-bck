@@ -6,7 +6,6 @@
 
 #include "dsglobal.h"
 #include <QSharedData>
-#include <QStringList>
 #include <QVariant>
 
 DS_BEGIN_NAMESPACE

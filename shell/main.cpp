@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     if (parser.isSet(coronaOption)) {
         pluginIds << parser.value(coronaOption);
     }
-    qDebug() << pluginIds << parser.value(coronaOption);
+    qInfo() << "Loading plugin id" << pluginIds;
     for (auto pluginId : pluginIds) {
         auto applet = DPluginLoader::instance()->loadApplet(pluginId);
         applets << applet;
