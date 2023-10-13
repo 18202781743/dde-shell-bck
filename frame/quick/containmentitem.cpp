@@ -11,15 +11,6 @@ DS_BEGIN_NAMESPACE
 
 Q_DECLARE_LOGGING_CATEGORY(dsLog)
 
-static void registType()
-{
-    const char *uri = "org.deepin.ds";
-    qmlRegisterType<DContainmentItem>(uri, 1, 0, "ContainmentItem");
-    qmlRegisterUncreatableType<DContainmentItem>(uri, 1, 0, "Containment", "Containment Attached");
-}
-
-Q_CONSTRUCTOR_FUNCTION(registType);
-
 class DContainmentItemPrivate
 {
 public:

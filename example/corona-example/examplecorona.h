@@ -5,7 +5,6 @@
 #pragma once
 
 #include "corona.h"
-#include "panelview.h"
 
 DS_USE_NAMESPACE
 
@@ -17,14 +16,11 @@ public:
 
     virtual ~ExampleCorona();
 
-    void load();
+    void load() override;
 
     virtual void init() override;
 
-    DPanelView *view();
-
 private:
-    DPanelView *m_view;
     DCorona *m_corona;
 
 };

@@ -3,6 +3,7 @@
         "Version": "1.0",
         "Id": "org.deepin.ds.corona-example",
         "Url": "main.qml",
-        "ContainmentType": "Panel"
+        "ContainmentType": "Panel",
+        "Position": "center"
     }
 }

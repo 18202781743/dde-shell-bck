@@ -7,21 +7,11 @@
 
 #include <QLoggingCategory>
 #include <QQmlEngine>
+#include <QQuickWindow>
 
 DS_BEGIN_NAMESPACE
 
 Q_DECLARE_LOGGING_CATEGORY(dsLog)
-
-static void registType()
-{
-    const char *uri = "org.deepin.ds";
-    qmlRegisterAnonymousType<DApplet>(uri, 1);
-    qmlRegisterType<DAppletItem>(uri, 1, 0, "AppletItem");
-
-    qmlRegisterUncreatableType<DAppletItem>(uri, 1, 0, "Applet", "Applet Attached");
-}
-
-Q_CONSTRUCTOR_FUNCTION(registType);
 
 class DAppletItemPrivate
 {
@@ -69,6 +59,12 @@ DApplet *DAppletItem::qmlAttachedProperties(QObject *object)
             return appletItem->applet();
         }
         item = item->parentItem();
+    }
+    if (!item) {
+        item = qobject_cast<QQuickItem *>(object);
+        if(auto applet = item->window()->property("_ds_window_applet").value<DApplet *>()) {
+            return applet;
+        }
     }
     return nullptr;
 }

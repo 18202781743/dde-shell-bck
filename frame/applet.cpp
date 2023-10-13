@@ -59,4 +59,9 @@ void DApplet::init()
 
 }
 
+void DApplet::load()
+{
+
+}
+
 DS_END_NAMESPACE

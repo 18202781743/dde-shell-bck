@@ -6,8 +6,10 @@
 
 #include "pluginloader.h"
 #include "pluginmetadata.h"
+#include "quick/appletitem.h"
 
 #include <QLoggingCategory>
+
 
 DS_BEGIN_NAMESPACE
 
@@ -62,6 +64,11 @@ void DContainment::load()
             containment->load();
         }
     }
+}
+
+QObject *DContainment::itemFor(DApplet *applet)
+{
+    return DAppletItem::itemForApplet(applet);
 }
 
 DS_END_NAMESPACE

@@ -6,6 +6,7 @@
 
 #include "containment.h"
 
+#include <QQuickWindow>
 #include <QStringList>
 #include <QVariant>
 
@@ -23,9 +24,10 @@ public:
     explicit DCorona(QObject *parent = nullptr);
     virtual ~DCorona();
 
-    QList<DContainment *> containments() const;
+    void setRootPlugin(const QString &pluginId);
+    void createWindow();
 
-    DContainment *createContainment(const QString &pluginId, const QVariantList &args = QVariantList());
+    QQuickWindow *window() const;
 
     // 从配置文件中加载插件
     virtual void load();

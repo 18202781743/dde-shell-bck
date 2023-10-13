@@ -10,10 +10,7 @@ import org.deepin.ds 1.0
 
 ContainmentItem {
     id: root
-    width: 200
-    height: 200
     RowLayout {
-
         Repeater {
             model: Applet.applets
             delegate: Loader {
@@ -21,7 +18,6 @@ ContainmentItem {
                 property var applet
                 width: applet ? applet.width : 30
                 height: applet ? applet.height : 30
-
                 Component.onCompleted: {
                     var applet = modelData
                     var appletItem = root.itemFor(applet)
@@ -29,10 +25,7 @@ ContainmentItem {
                     appletItem.parent = appletLoader
                     appletItem.anchors.fill = appletLoader
                 }
-
             }
         }
-
     }
-
 }

@@ -5,6 +5,7 @@
 #include "qmlengine.h"
 #include "applet.h"
 
+#include <QCoreApplication>
 #include <QLoggingCategory>
 #include <QQmlComponent>
 #include <QQmlContext>
@@ -27,6 +28,8 @@ public:
         static QQmlEngine *s_engine = nullptr;
         if (!s_engine) {
             s_engine = new QQmlEngine();
+            const QString rootDir = QCoreApplication::applicationDirPath();
+            s_engine->addImportPath(rootDir + "/../plugins");
         }
         return s_engine;
     }
@@ -37,6 +40,13 @@ DQmlEngine::DQmlEngine(DApplet *applet, QObject *parent)
     , d(new DQmlEnginePrivate())
 {
     d->m_applet = applet;
+}
+
+DQmlEngine::DQmlEngine(QObject *parent)
+    : QObject(parent)
+    , d(new DQmlEnginePrivate())
+{
+
 }
 
 DQmlEngine::~DQmlEngine()
@@ -62,6 +72,9 @@ void DQmlEngine::completeCreate()
     if (!d->m_component)
         return;
 
+    if (!d->m_component->isReady())
+        return;
+
     d->m_component->completeCreate();
 }
 
@@ -69,7 +82,7 @@ QObject *DQmlEngine::create()
 {
     auto object = beginCreate();
     if (object) {
-        QTimer::singleShot(10, this , [this](){
+        QTimer::singleShot(0, this , [this](){
             completeCreate();
         });
     }

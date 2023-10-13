@@ -4,6 +4,6 @@
         "Id": "org.deepin.ds.containment-example",
         "Url": "main.qml",
         "Parent": "org.deepin.ds.corona-example",
-        "ContainmentType": "containment"
+        "ContainmentType": "Containment"
     }
 }

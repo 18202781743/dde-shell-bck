@@ -34,6 +34,8 @@ public:
 
     virtual void init();
 
+    virtual void load();
+
 private:
     DAppletPrivate *d = nullptr;
 };

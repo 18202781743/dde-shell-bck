@@ -28,7 +28,10 @@ public:
     void addApplet(DApplet *applet);
     QList<DApplet *> applets() const;
 
-    void load();
+    void load() override;
+
+public Q_SLOTS:
+    QObject *itemFor(DApplet *applet);
 
 Q_SIGNALS:
     void appletsChanged();

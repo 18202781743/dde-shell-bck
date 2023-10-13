@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
         pluginIds << "org.deepin.ds.corona-example";
     }
     if (parser.isSet(coronaOption)) {
-        pluginIds << parser.value(coronaOption);
+        pluginIds << parser.values(coronaOption);
     }
     qInfo() << "Loading plugin id" << pluginIds;
     for (auto pluginId : pluginIds) {
