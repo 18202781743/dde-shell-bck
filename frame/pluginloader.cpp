@@ -32,9 +32,10 @@ public:
     }
     void init()
     {
+        for (auto item : buildinPluginPaths()) {
+            q->addPluginDir(item);
+        }
         const QString rootDir(QCoreApplication::applicationDirPath());
-        q->addPluginDir(rootDir + "/../plugins");
-        m_pluginDirs.append(rootDir + "/../packages");
 
         for (auto item : m_pluginDirs) {
             const QDirIterator::IteratorFlags flags = QDirIterator::Subdirectories;
@@ -74,6 +75,7 @@ public:
 
         result <<  QCoreApplication::applicationDirPath();
         result <<  QCoreApplication::applicationDirPath();
+        result << QCoreApplication::applicationDirPath() + "/../packages";
 
         for (auto item : QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation)) {
             result << item + "/dde-shell";
@@ -82,11 +84,24 @@ public:
         return result;
     }
 
+    QStringList buildinPluginPaths()
+    {
+        QStringList result;
+        // 'DDE_SHELL_PACKAGE_PATH' directory.
+        const auto dtkPluginPath = qgetenv("DDE_SHELL_PLUGIN_PATH");
+        if (!dtkPluginPath.isEmpty())
+            result.append(dtkPluginPath);
+
+        result <<  QCoreApplication::applicationDirPath() + "/../plugins";
+
+        return result;
+    }
+
     DAppletFactory *appletFactory(const DPluginMetaData &data)
     {
         DAppletFactory *factory = nullptr;
         const QString fileName = data.pluginId();
-        QPluginLoader loader(fileName + ".so");
+        QPluginLoader loader(fileName);
         loader.load();
         if (!loader.isLoaded()) {
             return factory;

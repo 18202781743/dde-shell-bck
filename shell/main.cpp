@@ -47,7 +47,9 @@ int main(int argc, char *argv[])
     qInfo() << "Loading plugin id" << pluginIds;
     for (auto pluginId : pluginIds) {
         auto applet = DPluginLoader::instance()->loadApplet(pluginId);
-        applets << applet;
+        if (applet) {
+            applets << applet;
+        }
     }
     for (auto applet : applets) {
         applet->init();

@@ -30,6 +30,8 @@ public:
             s_engine = new QQmlEngine();
             const QString rootDir = QCoreApplication::applicationDirPath();
             s_engine->addImportPath(rootDir + "/../plugins");
+            s_engine->addImportPath(DDE_SHELL_QML_INSTALL_DIR);
+            qCInfo(dsLog()) << "Engine importPaths" << s_engine->importPathList();
         }
         return s_engine;
     }

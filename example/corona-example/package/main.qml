@@ -12,6 +12,7 @@ import org.deepin.dtk 1.0 as D
 
 Window {
     id: root
+    visible: true
     width: Screen.width
     height: 200
     D.DWindow.enabled: true

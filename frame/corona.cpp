@@ -91,10 +91,6 @@ void DCorona::load()
     }
 
     createWindow();
-
-    if (window()) {
-        window()->show();
-    }
 }
 
 void DCorona::save()

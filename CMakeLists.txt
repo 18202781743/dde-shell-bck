@@ -20,9 +20,22 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(QT_VERSION_MAJOR 5)
+set(DTK_VERSION_MAJOR "")
+
 include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
+set(LIB_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE STRING "Library install path")
+set(DDE_SHELL_PACKAGE_INSTALL_DIR share/dde-shell CACHE STRING "Package install path")
+set(DDE_SHELL_PLUGIN_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/dde-shell CACHE STRING "Plugin install path")
+set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/dde-shell" CACHE STRING "Headers install path")
+set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/DDEShell" CACHE STRING "CMake config file install directory")
+set(QML_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/qml" CACHE STRING "Qml plugin install directory")
+
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(DSBuildConfig)
+include(DDEShellPackageMacros)
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Core Gui Concurrent Quick)
 
@@ -30,3 +43,18 @@ add_subdirectory(frame)
 add_subdirectory(shell)
 add_subdirectory(example)
 #add_subdirectory(tests)
+
+configure_package_config_file(
+    "${CMAKE_CURRENT_LIST_DIR}/misc/DDEShellConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/DDEShellConfig.cmake"
+    INSTALL_DESTINATION "${CONFIG_INSTALL_DIR}"
+)
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/DDEShellConfigVersion.cmake"
+    VERSION ${VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+# Install cmake config file
+install(FILES "${PROJECT_SOURCE_DIR}/cmake/DDEShellPackageMacros.cmake" DESTINATION "${CONFIG_INSTALL_DIR}")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/DDEShellConfig.cmake" DESTINATION "${CONFIG_INSTALL_DIR}")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/DDEShellConfigVersion.cmake" DESTINATION "${CONFIG_INSTALL_DIR}")
