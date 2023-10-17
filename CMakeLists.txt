@@ -40,10 +40,10 @@ set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/DDEShell" CACHE STRING "CM
 set(QML_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/qml" CACHE STRING "Qml plugin install directory")
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-include(DSBuildConfig)
 include(DDEShellPackageMacros)
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Core Gui Concurrent Quick)
+find_package(Dtk REQUIRED COMPONENTS Core Gui)
 
 add_subdirectory(frame)
 add_subdirectory(shell)

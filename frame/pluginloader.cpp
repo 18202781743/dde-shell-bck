@@ -9,6 +9,7 @@
 #include "pluginmetadata.h"
 #include "pluginfactory.h"
 
+#include <dobject_p.h>
 #include <QCoreApplication>
 #include <QDir>
 #include <QDirIterator>
@@ -18,20 +19,24 @@
 
 DS_BEGIN_NAMESPACE;
 
+DCORE_USE_NAMESPACE
+
 static const QString MetaDataFileName{"metadata.json"};
 
 Q_DECLARE_LOGGING_CATEGORY(dsLog)
 
-class DPluginLoaderPrivate
+class DPluginLoaderPrivate : public DObjectPrivate
 {
 public:
-    DPluginLoaderPrivate(DPluginLoader *q)
-        : q(q)
+    explicit DPluginLoaderPrivate(DPluginLoader *qq)
+        : DObjectPrivate(qq)
     {
         m_pluginDirs = buildinPackagePaths();
     }
     void init()
     {
+        D_Q(DPluginLoader);
+
         for (auto item : buildinPluginPaths()) {
             q->addPluginDir(item);
         }
@@ -145,11 +150,12 @@ public:
 
     QStringList m_pluginDirs;
     QMap<QString, DPluginMetaData> m_plugins;
-    DPluginLoader *q = nullptr;
+
+    D_DECLARE_PUBLIC(DPluginLoader)
 };
 
 DPluginLoader::DPluginLoader()
-    : d(new DPluginLoaderPrivate(this))
+    : DObject(*new DPluginLoaderPrivate(this))
 {
 }
 
@@ -163,29 +169,34 @@ DPluginLoader *DPluginLoader::instance()
     static DPluginLoader *g_instance = nullptr;
     if (!g_instance) {
         g_instance = new DPluginLoader();
-        g_instance->d->init();
+        g_instance->d_func()->init();
     }
     return g_instance;
 }
 
 QList<DPluginMetaData> DPluginLoader::plugins() const
 {
+    D_DC(DPluginLoader);
     return d->m_plugins.values();
 }
 
 void DPluginLoader::addPackageDir(const QString &dir)
 {
+    D_D(DPluginLoader);
     d->m_pluginDirs.prepend(dir);
     d->init();
 }
 
 void DPluginLoader::addPluginDir(const QString &dir)
 {
+    if (QCoreApplication::libraryPaths().contains(dir))
+        return;
     QCoreApplication::addLibraryPath(dir);
 }
 
 DApplet *DPluginLoader::loadApplet(const QString &pluginId)
 {
+    D_D(DPluginLoader);
     DPluginMetaData metaData = d->pluginMetaData(pluginId);
     if (!metaData.isValid())
         return nullptr;
@@ -212,6 +223,7 @@ DApplet *DPluginLoader::loadApplet(const QString &pluginId)
 
 QList<DPluginMetaData> DPluginLoader::childrenPlugin(const QString &pluginId) const
 {
+    D_DC(DPluginLoader);
     DPluginMetaData metaData = d->pluginMetaData(pluginId);
     if (!metaData.isValid())
         return {};
@@ -229,6 +241,7 @@ QList<DPluginMetaData> DPluginLoader::childrenPlugin(const QString &pluginId) co
 
 DPluginMetaData DPluginLoader::parentPlugin(const QString &pluginId) const
 {
+    D_DC(DPluginLoader);
     DPluginMetaData metaData = d->pluginMetaData(pluginId);
     if (!metaData.isValid())
         return {};

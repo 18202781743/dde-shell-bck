@@ -6,20 +6,20 @@
 
 #include "applet.h"
 
-#include <QStringList>
+#include <DObject>
 #include <QVariant>
 
 DS_BEGIN_NAMESPACE
 
-class DPluginMetaData;
 /**
- * @brief 插件项
+ * @brief 容器插件
  */
 class DContainmentPrivate;
 class Q_DECL_EXPORT DContainment : public DApplet
 {
     Q_OBJECT
     Q_PROPERTY(QList<DApplet *> applets READ applets NOTIFY appletsChanged)
+    D_DECLARE_PRIVATE(DContainment)
 public:
     DContainment(QObject *parent = nullptr);
     virtual ~DContainment();
@@ -35,9 +35,6 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void appletsChanged();
-
-private:
-    DContainmentPrivate *d = nullptr;
 };
 
 DS_END_NAMESPACE

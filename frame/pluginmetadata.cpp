@@ -58,7 +58,7 @@ bool DPluginMetaData::isValid() const
     return !d->m_pluginId.isEmpty();
 }
 
-QVariant DPluginMetaData::value(const QString &key, const QVariant &defaultValue)
+QVariant DPluginMetaData::value(const QString &key, const QVariant &defaultValue) const
 {
     if (!isValid())
         return defaultValue;

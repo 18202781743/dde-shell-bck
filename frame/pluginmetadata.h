@@ -24,7 +24,7 @@ public:
     bool operator==(const DPluginMetaData  &other) const;
     virtual ~DPluginMetaData();
     bool isValid() const;
-    QVariant value(const QString &key, const QVariant &defaultValue = QVariant());
+    QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const;
 
     QString pluginId() const;
     QString pluginDir() const;

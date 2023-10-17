@@ -16,7 +16,6 @@ macro(ds_install_package)
     add_custom_command(TARGET ${_config_PACKAGE}_package
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${package_root_dir} ${package_dirs}
     )
-    file(MAKE_DIRECTORY ${package_dirs})
     install(DIRECTORY ${package_dirs} DESTINATION ${DDE_SHELL_PACKAGE_INSTALL_DIR}/${_config_PACKAGE})
 
     if (DEFINED _config_TARGET)
@@ -25,7 +24,6 @@ macro(ds_install_package)
             OUTPUT_NAME ${_config_PACKAGE}
             LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/plugins/
         )
-        file(MAKE_DIRECTORY ${DDE_SHELL_PLUGIN_INSTALL_DIR})
         install(TARGETS ${_config_TARGET} DESTINATION ${DDE_SHELL_PLUGIN_INSTALL_DIR}/)
     endif()
 endmacro()

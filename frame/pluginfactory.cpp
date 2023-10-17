@@ -16,11 +16,21 @@ static QMap<QString, DAppletFactory::CreateAppletFunction> g_appletFactory;
 void DAppletFactory::registerInstance(CreateAppletFunction func)
 {
     const QString key = metaObject()->className();
+    if (g_appletFactory.contains(key)) {
+        qCWarning(dsLog()) << "The applet factory has registed" << key;
+        return;
+    }
     g_appletFactory[key] = func;
+    qCDebug(dsLog()) << "Registed the applet factory" << key;
 }
 
-DAppletFactory::DAppletFactory()
-    : QObject()
+DAppletFactory::DAppletFactory(QObject *parent)
+    : QObject(parent)
+{
+
+}
+
+DAppletFactory::~DAppletFactory()
 {
 
 }

@@ -20,7 +20,7 @@ class Q_DECL_EXPORT DAppletItem : public QQuickItem
 {
     Q_OBJECT
 public:
-    DAppletItem(QQuickItem *parent = nullptr);
+    explicit DAppletItem(QQuickItem *parent = nullptr);
     virtual ~DAppletItem();
 
     DApplet *applet() const;

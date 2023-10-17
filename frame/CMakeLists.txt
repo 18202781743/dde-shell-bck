@@ -39,6 +39,7 @@ set_target_properties(dde-shell-frame PROPERTIES
 )
 target_link_libraries(dde-shell-frame
 PUBLIC
+    Dtk::Core
     Qt5::Core
     Qt5::Gui
     Qt5::Quick

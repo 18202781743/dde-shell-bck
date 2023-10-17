@@ -20,9 +20,8 @@ class Q_DECL_EXPORT DContainmentItem : public DAppletItem
 {
     Q_OBJECT
 public:
-    DContainmentItem(QQuickItem *parent = nullptr);
+    explicit DContainmentItem(QQuickItem *parent = nullptr);
     virtual ~DContainmentItem();
-
 
     static DContainment *qmlAttachedProperties(QObject *object);
 

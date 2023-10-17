@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "containment.h"
+#include "applet_p.h"
 
 #include "pluginloader.h"
 #include "pluginmetadata.h"
@@ -12,18 +13,25 @@
 
 
 DS_BEGIN_NAMESPACE
+DCORE_USE_NAMESPACE
 
 Q_DECLARE_LOGGING_CATEGORY(dsLog)
 
-class DContainmentPrivate
+class DContainmentPrivate : public DAppletPrivate
 {
 public:
+    explicit DContainmentPrivate(DContainment *qq)
+        : DAppletPrivate(qq)
+    {
+
+    }
     QList<DApplet *> m_applets;
+
+    D_DECLARE_PUBLIC(DContainment)
 };
 
 DContainment::DContainment(QObject *parent)
-    : DApplet(parent)
-    , d(new DContainmentPrivate())
+    : DApplet(*new DContainmentPrivate(this))
 {
 }
 
@@ -43,6 +51,7 @@ DApplet *DContainment::createApplet(const QString &pluginId)
 
 void DContainment::addApplet(DApplet *applet)
 {
+    D_D(DContainment);
     Q_ASSERT(applet);
     d->m_applets.append(applet);
     Q_EMIT appletsChanged();
@@ -50,6 +59,7 @@ void DContainment::addApplet(DApplet *applet)
 
 QList<DApplet *> DContainment::applets() const
 {
+    D_DC(DContainment);
     return d->m_applets;
 }
 

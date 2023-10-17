@@ -7,6 +7,7 @@
 #include "dsglobal.h"
 #include "pluginmetadata.h"
 #include <QObject>
+#include <DObject>
 
 DS_BEGIN_NAMESPACE
 
@@ -16,9 +17,10 @@ class DApplet;
  * @brief 插件加载，创建
  */
 class DPluginLoaderPrivate;
-class Q_DECL_EXPORT DPluginLoader : public QObject
+class Q_DECL_EXPORT DPluginLoader : public QObject, public DTK_CORE_NAMESPACE::DObject
 {
     Q_OBJECT
+    D_DECLARE_PRIVATE(DPluginLoader)
 public:
     DPluginLoader();
     virtual ~DPluginLoader();
@@ -32,8 +34,6 @@ public:
 
     QList<DPluginMetaData> childrenPlugin(const QString &pluginId) const;
     DPluginMetaData parentPlugin(const QString &pluginId) const;
-private:
-    QScopedPointer<DPluginLoaderPrivate> d;
 };
 
 DS_END_NAMESPACE

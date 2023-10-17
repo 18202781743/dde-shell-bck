@@ -5,25 +5,29 @@
 #pragma once
 
 #include "dsglobal.h"
-#include "applet.h"
 
 #include <QObject>
 
 DS_BEGIN_NAMESPACE
+
+class DApplet;
 
 #define DAppletFactory_iid "org.deepin.ds.applet-factory"
 
 /**
  * @brief 插件注册
  */
+class DAppletFactoryPrivate;
 class Q_DECL_EXPORT DAppletFactory : public QObject
 {
     Q_OBJECT
 public:
+    explicit DAppletFactory(QObject *parent = nullptr);
+    ~DAppletFactory();
+
     using CreateAppletFunction = std::function<DApplet *(QObject *)>;
     void registerInstance(CreateAppletFunction func);
 
-    DAppletFactory();
     template<class T>
     static inline T *registerApplet(QObject *parent)
     {
@@ -31,6 +35,8 @@ public:
     }
 
     virtual DApplet *create(QObject *parent = nullptr);
+private:
+    DAppletFactoryPrivate *d = nullptr;
 };
 
 DS_END_NAMESPACE
