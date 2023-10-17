@@ -35,6 +35,7 @@ public:
         for (auto item : buildinPluginPaths()) {
             q->addPluginDir(item);
         }
+
         const QString rootDir(QCoreApplication::applicationDirPath());
 
         for (auto item : m_pluginDirs) {
@@ -80,6 +81,7 @@ public:
         for (auto item : QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation)) {
             result << item + "/dde-shell";
         }
+        qCDebug(dsLog()) << "Buildin package paths" << result;
 
         return result;
     }
@@ -93,7 +95,9 @@ public:
             result.append(dtkPluginPath);
 
         result <<  QCoreApplication::applicationDirPath() + "/../plugins";
+        result <<  DDE_SHELL_PLUGIN_INSTALL_DIR;
 
+        qCDebug(dsLog()) << "Buildin plugin paths" << result;
         return result;
     }
 
@@ -118,12 +122,12 @@ public:
                 break;
 
             if (!loader.instance()) {
-                qWarning(dsLog) << "load the plugin error." << loader.errorString();
+                qWarning(dsLog) << "Load the plugin failed." << loader.errorString();
                 break;
             }
             factory = qobject_cast<DAppletFactory *>(loader.instance());
             if (!factory) {
-                qWarning(dsLog) << "the plugin isn't a IWidgetPlugin." << fileName;
+                qWarning(dsLog) << "The plugin isn't a DAppletFactory." << fileName;
                 break;
             }
         } while (false);
@@ -188,6 +192,7 @@ DApplet *DPluginLoader::loadApplet(const QString &pluginId)
 
     DApplet *applet = nullptr;
     if (auto factory = d->appletFactory(metaData)) {
+        qCDebug(dsLog()) << "Loading applet by factory" << pluginId;
         applet = factory->create();
     }
     if (!applet) {

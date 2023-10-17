@@ -6,7 +6,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 set(VERSION 3.7)
 
-project(dde-shell)
+set(DS_VERSION "1.0.0" CACHE STRING "Define project version")
+project(DDEShell
+    VERSION "${DS_VERSION}"
+    DESCRIPTION "dde-shell"
+    HOMEPAGE_URL "https://github.com/linuxdeepin/dde-shell"
+    LANGUAGES CXX
+)
 
 set(CMAKE_CXX_STANDARD 17)
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)

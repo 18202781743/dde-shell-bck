@@ -1,0 +1,35 @@
+Source: dde-shell
+Section: unknown
+Priority: optional
+Maintainer: Deepin Packages Builder <packages@deepin.com>
+Build-Depends:
+ debhelper-compat ( =12),
+ cmake,
+ qtdeclarative5-dev,
+ qtbase5-dev-tools,
+ libdtkgui-dev,
+ libdtkcore-dev,
+ libdtkcommon-dev,
+ qttools5-dev-tools,
+ qttools5-dev,
+Standards-Version: 3.9.8
+Homepage: http://www.deepin.org
+
+Package: libdde-shell
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+  libdtkcore5
+Multi-Arch: same
+Description: <insert up to 60 chars description>
+
+Package: libdde-shell-dev
+Architecture: any
+Depends: ${misc:Depends}, libdde-shell( =${binary:Version})
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: dde-shell
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libdde-shell( =${binary:Version})
+Multi-Arch: same
+Description: <insert up to 60 chars description>
