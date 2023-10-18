@@ -5,20 +5,21 @@
 #pragma once
 
 #include "dsglobal.h"
-#include "applet.h"
 
-#include <QStringList>
+#include <DObject>
 #include <QQuickItem>
 
 DS_BEGIN_NAMESPACE
 
+class DApplet;
 class DAppletItemPrivate;
 /**
  * @brief UI插件实例项
  */
-class Q_DECL_EXPORT DAppletItem : public QQuickItem
+class Q_DECL_EXPORT DAppletItem : public QQuickItem, public DTK_CORE_NAMESPACE::DObject
 {
     Q_OBJECT
+    D_DECLARE_PRIVATE(DAppletItem)
 public:
     explicit DAppletItem(QQuickItem *parent = nullptr);
     virtual ~DAppletItem();
@@ -28,9 +29,6 @@ public:
     static DAppletItem *itemForApplet(DApplet *applet);
 
     static DApplet *qmlAttachedProperties(QObject *object);
-
-private:
-    DAppletItemPrivate *d = nullptr;
 };
 
 DS_END_NAMESPACE

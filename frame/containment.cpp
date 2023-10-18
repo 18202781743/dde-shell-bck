@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "containment.h"
-#include "applet_p.h"
+#include "private/applet_p.h"
 
 #include "pluginloader.h"
 #include "pluginmetadata.h"
@@ -25,7 +25,7 @@ public:
 
     }
     QList<DApplet *> m_applets;
-    QList<DAppletItem *> m_appletItems;
+    QList<QObject *> m_appletItems;
 
     D_DECLARE_PUBLIC(DContainment)
 };
@@ -63,15 +63,16 @@ QList<DApplet *> DContainment::applets() const
     return d->m_applets;
 }
 
-QList<DAppletItem *> DContainment::appletItems() const
+QList<QObject *> DContainment::appletItems()
 {
-    D_DC(DContainment);
+    D_D(DContainment);
     for (auto item : applets()) {
         auto appletItem = DAppletItem::itemForApplet(item);
         if (!appletItem || d->m_appletItems.contains(appletItem))
             continue;
-        const_cast<DContainmentPrivate *>(d)->m_appletItems << appletItem;
+        d->m_appletItems << appletItem;
     }
+
     return d->m_appletItems;
 }
 
@@ -88,7 +89,7 @@ void DContainment::load()
     }
 }
 
-DAppletItem *DContainment::itemFor(DApplet *applet)
+QObject *DContainment::itemFor(DApplet *applet)
 {
     return DAppletItem::itemForApplet(applet);
 }

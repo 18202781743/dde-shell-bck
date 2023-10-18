@@ -11,13 +11,15 @@ set(PUBLIC_HEADERS
     applet.h
     containment.h
     corona.h
-    appletitem.h
-    containmentitem.h
-    panelview.h
     qmlengine.h
 )
 add_library(dde-shell-frame SHARED
     ${PUBLIC_HEADERS}
+    private/applet_p.h
+    private/appletitem_p.h
+    appletitem.h
+    containmentitem.h
+    panelview.h
     dstypes.cpp
     pluginmetadata.cpp
     pluginloader.cpp
@@ -47,7 +49,6 @@ PUBLIC
 target_include_directories(dde-shell-frame INTERFACE
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/private>
     $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
 )
 target_link_directories(dde-shell-frame INTERFACE

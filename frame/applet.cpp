@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "applet.h"
-#include "applet_p.h"
+#include "private/applet_p.h"
 
 #include <QLoggingCategory>
 

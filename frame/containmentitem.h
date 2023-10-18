@@ -8,10 +8,9 @@
 #include "appletitem.h"
 #include "containment.h"
 
-#include <QStringList>
-
 DS_BEGIN_NAMESPACE
 
+class DContainment;
 class DContainmentItemPrivate;
 /**
  * @brief UI插件实例项
@@ -19,17 +18,12 @@ class DContainmentItemPrivate;
 class Q_DECL_EXPORT DContainmentItem : public DAppletItem
 {
     Q_OBJECT
+    D_DECLARE_PRIVATE(DContainmentItem)
 public:
     explicit DContainmentItem(QQuickItem *parent = nullptr);
     virtual ~DContainmentItem();
 
     static DContainment *qmlAttachedProperties(QObject *object);
-
-public Q_SLOTS:
-    QObject *itemFor(DApplet *applet);
-
-private:
-    DContainmentItemPrivate *d = nullptr;
 };
 
 DS_END_NAMESPACE
