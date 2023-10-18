@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "containment.h"
-#include "private/applet_p.h"
+#include "private/containment_p.h"
 
 #include "pluginloader.h"
 #include "pluginmetadata.h"
@@ -16,23 +16,15 @@ DCORE_USE_NAMESPACE
 
 Q_DECLARE_LOGGING_CATEGORY(dsLog)
 
-class DContainmentPrivate : public DAppletPrivate
-{
-public:
-    explicit DContainmentPrivate(DContainment *qq)
-        : DAppletPrivate(qq)
-    {
-
-    }
-    QList<DApplet *> m_applets;
-    QList<QObject *> m_appletItems;
-
-    D_DECLARE_PUBLIC(DContainment)
-};
-
 DContainment::DContainment(QObject *parent)
-    : DApplet(*new DContainmentPrivate(this))
+    : DContainment(*new DContainmentPrivate(this), parent)
 {
+}
+
+DContainment::DContainment(DContainmentPrivate &dd, QObject *parent)
+    : DApplet(dd, parent)
+{
+
 }
 
 DContainment::~DContainment()
@@ -42,19 +34,12 @@ DContainment::~DContainment()
 
 DApplet *DContainment::createApplet(const QString &pluginId)
 {
+    D_D(DContainment);
     auto applet = DPluginLoader::instance()->loadApplet(pluginId);
     if (applet) {
-        addApplet(applet);
+        d->m_applets.append(applet);
     }
     return applet;
-}
-
-void DContainment::addApplet(DApplet *applet)
-{
-    D_D(DContainment);
-    Q_ASSERT(applet);
-    d->m_applets.append(applet);
-    Q_EMIT appletsChanged();
 }
 
 QList<DApplet *> DContainment::applets() const
@@ -66,12 +51,6 @@ QList<DApplet *> DContainment::applets() const
 QList<QObject *> DContainment::appletItems()
 {
     D_D(DContainment);
-    for (auto item : applets()) {
-        auto appletItem = DAppletItem::itemForApplet(item);
-        if (!appletItem || d->m_appletItems.contains(appletItem))
-            continue;
-        d->m_appletItems << appletItem;
-    }
 
     return d->m_appletItems;
 }
@@ -83,15 +62,28 @@ void DContainment::load()
         const QString id = item.pluginId();
         auto applet = createApplet(id);
 
-        if (auto containment = qobject_cast<DContainment *>(applet)) {
-            containment->load();
+        if (applet) {
+            applet->load();
         }
     }
+    DApplet::load();
 }
 
-QObject *DContainment::itemFor(DApplet *applet)
+void DContainment::init()
 {
-    return DAppletItem::itemForApplet(applet);
+    D_D(DContainment);
+
+    for (auto applet : applets()) {
+        auto appletItem = DAppletItem::itemForApplet(applet);
+        if (!appletItem || d->m_appletItems.contains(appletItem))
+            continue;
+        d->m_appletItems << appletItem;
+
+        applet->init();
+    }
+    DApplet::init();
+
+    Q_EMIT appletItemsChanged();
 }
 
 DS_END_NAMESPACE

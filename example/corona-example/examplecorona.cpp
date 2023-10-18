@@ -8,8 +8,7 @@
 
 
 ExampleCorona::ExampleCorona(QObject *parent)
-    : DContainment(parent)
-    , m_corona(new DCorona)
+    : DCorona(parent)
 {
 }
 
@@ -20,14 +19,12 @@ ExampleCorona::~ExampleCorona()
 
 void ExampleCorona::load()
 {
-    DContainment::load();
+    DCorona::load();
 }
 
 void ExampleCorona::init()
 {
-    const QString pluginId = pluginMetaData().pluginId();
-    m_corona->setRootPlugin(pluginId);
-    m_corona->load();
+    DCorona::init();
 }
 
 D_APPLET_CLASS(ExampleCorona)

@@ -9,6 +9,7 @@ import org.deepin.ds 1.0
 import "control"
 
 AppletItem {
+    objectName: "appplet item"
     implicitWidth: 100
     implicitHeight: 100
     Rectangle {

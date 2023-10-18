@@ -5,13 +5,13 @@ Maintainer: Deepin Packages Builder <packages@deepin.com>
 Build-Depends:
  debhelper-compat ( =12),
  cmake,
- qtdeclarative5-dev,
- qtbase5-dev-tools,
- libdtkgui-dev,
- libdtkcore-dev,
+ qt6-base-dev,
+ qt6-declarative-dev,
+ qt6-base-dev-tools,
+ qt6-tools-dev,
+ libdtk6gui-dev,
+ libdtk6core-dev,
  libdtkcommon-dev,
- qttools5-dev-tools,
- qttools5-dev,
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
 

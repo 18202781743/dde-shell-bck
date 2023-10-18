@@ -8,6 +8,7 @@ import QtQuick.Controls 2.15
 import org.deepin.ds 1.0
 
 AppletItem {
+    objectName: "appplet data"
     implicitWidth: 200
     implicitHeight: 100
     Rectangle {

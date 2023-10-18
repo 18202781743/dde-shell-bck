@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
         applets << applet;
     }
     for (auto applet : applets) {
+        applet->load();
         applet->init();
     }
 

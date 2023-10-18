@@ -16,6 +16,8 @@ set(PUBLIC_HEADERS
 add_library(dde-shell-frame SHARED
     ${PUBLIC_HEADERS}
     private/applet_p.h
+    private/containment_p.h
+    private/corona_p.h
     private/appletitem_p.h
     appletitem.h
     containmentitem.h

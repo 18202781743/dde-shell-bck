@@ -8,7 +8,7 @@
 
 DS_USE_NAMESPACE
 
-class Q_DECL_EXPORT ExampleCorona : public DContainment
+class Q_DECL_EXPORT ExampleCorona : public DCorona
 {
     Q_OBJECT
 public:
@@ -19,8 +19,4 @@ public:
     void load() override;
 
     virtual void init() override;
-
-private:
-    DCorona *m_corona;
-
 };

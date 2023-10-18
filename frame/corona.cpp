@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "corona.h"
+#include "private/corona_p.h"
+
 #include "dstypes.h"
 #include "pluginloader.h"
 #include "panelview.h"
@@ -29,17 +31,8 @@ static Types::Position typePosition(const QString &p)
     return {};
 }
 
-class DCoronaPrivate
-{
-public:
-    DApplet *m_applet = nullptr;
-    QString m_pluginId;
-    QQuickWindow *m_window = nullptr;
-};
-
 DCorona::DCorona(QObject *parent)
-    : QObject(parent)
-    , d(new DCoronaPrivate())
+    : DContainment(*new DCoronaPrivate(this), parent)
 {
 }
 
@@ -48,54 +41,47 @@ DCorona::~DCorona()
 
 }
 
-void DCorona::setRootPlugin(const QString &pluginId)
+void DCoronaPrivate::createWindow()
 {
-    d->m_pluginId = pluginId;
-}
-
-void DCorona::createWindow()
-{
-    if (!d->m_applet)
-        return;
-
-    DQmlEngine *engine = new DQmlEngine(d->m_applet);
-
-    auto rootObject = engine->create();
-
-    auto window = qobject_cast<QQuickWindow *>(rootObject);
-    if (window) {
-        d->m_window = window;
-        d->m_window->setProperty("_ds_window_applet", QVariant::fromValue(d->m_applet));
-
-        engine->completeCreate();
-
-        if (auto panel = qobject_cast<DPanelView *>(qmlAttachedPropertiesObject<DPanelView>(window))) {
-            const QString position = d->m_applet->pluginMetaData().value("Position").toString();
-            panel->setPosition(typePosition(position));
-        }
-    }
+    D_Q(DCorona);
 }
 
 QQuickWindow *DCorona::window() const
 {
+    D_DC(DCorona);
     return d->m_window;
 }
 
 void DCorona::load()
 {
-    auto applet = DPluginLoader::instance()->loadApplet(d->m_pluginId);
-    if (applet) {
-        d->m_applet = applet;
-
-        d->m_applet->load();
-    }
-
-    createWindow();
+    D_D(DCorona);
+    DContainment::load();
 }
 
-void DCorona::save()
+void DCorona::init()
 {
+    D_D(DCorona);
 
+    auto applet = this;
+
+    DQmlEngine *engine = new DQmlEngine(applet, applet);
+
+    auto rootObject = engine->beginCreate();
+
+    auto window = qobject_cast<QQuickWindow *>(rootObject);
+    if (window) {
+        d->m_window = window;
+        d->m_window->setProperty("_ds_window_applet", QVariant::fromValue(applet));
+
+        if (auto panel = qobject_cast<DPanelView *>(qmlAttachedPropertiesObject<DPanelView>(window))) {
+            const QString position = applet->pluginMetaData().value("Position").toString();
+            panel->setPosition(typePosition(position));
+        }
+    }
+
+    DContainment::init();
+
+    engine->completeCreate();
 }
 
 DS_END_NAMESPACE

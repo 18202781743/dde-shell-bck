@@ -4,7 +4,6 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.11
 import QtQuick.Window 2.15
 
 import org.deepin.ds 1.0
@@ -21,7 +20,8 @@ Window {
     Control {
         anchors.fill: parent
         padding: 20
-        contentItem: Applet.applets[0]
+
+        contentItem: Applet.appletItems[0]
         background: Rectangle {
             color: "plum"
             opacity: 0.8

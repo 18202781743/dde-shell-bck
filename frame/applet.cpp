@@ -50,7 +50,6 @@ DPluginMetaData DApplet::pluginMetaData() const
 
 void DApplet::init()
 {
-
 }
 
 void DApplet::load()

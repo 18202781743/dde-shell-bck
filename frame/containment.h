@@ -18,24 +18,26 @@ class DContainmentPrivate;
 class Q_DECL_EXPORT DContainment : public DApplet
 {
     Q_OBJECT
-    Q_PROPERTY(QList<QObject *> applets READ appletItems NOTIFY appletsChanged)
+    Q_PROPERTY(QList<QObject *> appletItems READ appletItems NOTIFY appletItemsChanged)
     D_DECLARE_PRIVATE(DContainment)
 public:
-    DContainment(QObject *parent = nullptr);
+    explicit DContainment(QObject *parent = nullptr);
     virtual ~DContainment();
 
     DApplet *createApplet(const QString &pluginId);
-    void addApplet(DApplet *applet);
+
     QList<DApplet *> applets() const;
     QList<QObject *> appletItems();
 
     void load() override;
 
-public Q_SLOTS:
-    QObject *itemFor(DApplet *applet);
+    void init() override;
+
+protected:
+    DContainment(DContainmentPrivate &dd, QObject *parent = nullptr);
 
 Q_SIGNALS:
-    void appletsChanged();
+    void appletItemsChanged();
 };
 
 DS_END_NAMESPACE

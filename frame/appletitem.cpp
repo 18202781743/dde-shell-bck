@@ -41,9 +41,9 @@ DAppletItem *DAppletItem::itemForApplet(DApplet *applet)
     if (it != g_appletItems.constEnd())
         return it.value();
 
-    DQmlEngine *engine = new DQmlEngine(applet);
+    DQmlEngine *engine = new DQmlEngine(applet, applet);
 
-    auto rootObject = engine->create();
+    auto rootObject = engine->beginCreate();
 
     auto item = qobject_cast<DAppletItem *>(rootObject);
     if (!item)
@@ -51,6 +51,7 @@ DAppletItem *DAppletItem::itemForApplet(DApplet *applet)
 
     item->d_func()->m_applet = applet;
     g_appletItems[applet] = item;
+    engine->completeCreate();
 
     return item;
 }

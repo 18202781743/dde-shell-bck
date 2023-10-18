@@ -4,38 +4,32 @@
 
 #pragma once
 
+#include "dsglobal.h"
 #include "containment.h"
 
 #include <QQuickWindow>
-#include <QStringList>
-#include <QVariant>
 
 DS_BEGIN_NAMESPACE
 
 /**
  * @brief 插件集
- * 序列化和反序列化插件
  */
 class DCoronaPrivate;
-class Q_DECL_EXPORT DCorona : public QObject
+class Q_DECL_EXPORT DCorona : public DContainment
 {
     Q_OBJECT
+    D_DECLARE_PRIVATE(DCorona)
 public:
     explicit DCorona(QObject *parent = nullptr);
     virtual ~DCorona();
 
-    void setRootPlugin(const QString &pluginId);
-    void createWindow();
-
     QQuickWindow *window() const;
 
-    // 从配置文件中加载插件
-    virtual void load();
-    // 保存插件状态
-    virtual void save();
+    // 加载插件
+    virtual void load() override;
 
-private:
-    DCoronaPrivate *d = nullptr;
+    // 初始化
+    virtual void init() override;
 };
 
 DS_END_NAMESPACE
