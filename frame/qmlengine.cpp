@@ -6,6 +6,7 @@
 #include "applet.h"
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QLoggingCategory>
 #include <QQmlComponent>
 #include <QQmlContext>
@@ -35,6 +36,14 @@ public:
         }
         return s_engine;
     }
+    QString appletUrl() const
+    {
+        auto url = m_applet->pluginMetaData().value("Url").toString();
+        if (url.isEmpty())
+            return QString();
+
+        return QDir(m_applet->pluginMetaData().pluginDir()).absoluteFilePath(url);
+    }
 };
 
 DQmlEngine::DQmlEngine(DApplet *applet, QObject *parent)
@@ -58,7 +67,8 @@ DQmlEngine::~DQmlEngine()
 QObject *DQmlEngine::beginCreate()
 {
     auto component = new QQmlComponent(engine(), this);
-    component->loadUrl(d->m_applet->url());
+    const QString url = d->appletUrl();
+    component->loadUrl(url);
     if (component->isError()) {
         qCWarning(dsLog()) << "Loading url failed" << component->errorString();
         return nullptr;

@@ -21,23 +21,7 @@ Window {
     Control {
         anchors.fill: parent
         padding: 20
-        contentItem: Loader {
-            id: appletLoader
-            active: applet
-            property AppletItem applet
-            width: applet ? applet.width : 30
-            height: applet ? applet.height : 30
-
-            Component.onCompleted: {
-                if (Applet.applets.length <= 0)
-                    return
-                var applet = Applet.applets[0]
-                var appletItem = Applet.itemFor(applet)
-                appletLoader.applet = appletItem
-                appletItem.parent = appletLoader
-                appletItem.anchors.fill = appletLoader
-            }
-        }
+        contentItem: Applet.applets[0]
         background: Rectangle {
             color: "plum"
             opacity: 0.8

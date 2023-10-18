@@ -5,8 +5,8 @@
 #include "corona.h"
 #include "dstypes.h"
 #include "pluginloader.h"
-#include "quick/panelview.h"
-#include "quick/qmlengine.h"
+#include "panelview.h"
+#include "qmlengine.h"
 
 #include <QLoggingCategory>
 

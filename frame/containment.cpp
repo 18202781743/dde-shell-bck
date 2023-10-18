@@ -7,10 +7,9 @@
 
 #include "pluginloader.h"
 #include "pluginmetadata.h"
-#include "quick/appletitem.h"
+#include "appletitem.h"
 
 #include <QLoggingCategory>
-
 
 DS_BEGIN_NAMESPACE
 DCORE_USE_NAMESPACE
@@ -26,6 +25,7 @@ public:
 
     }
     QList<DApplet *> m_applets;
+    QList<DAppletItem *> m_appletItems;
 
     D_DECLARE_PUBLIC(DContainment)
 };
@@ -63,6 +63,18 @@ QList<DApplet *> DContainment::applets() const
     return d->m_applets;
 }
 
+QList<DAppletItem *> DContainment::appletItems() const
+{
+    D_DC(DContainment);
+    for (auto item : applets()) {
+        auto appletItem = DAppletItem::itemForApplet(item);
+        if (!appletItem || d->m_appletItems.contains(appletItem))
+            continue;
+        const_cast<DContainmentPrivate *>(d)->m_appletItems << appletItem;
+    }
+    return d->m_appletItems;
+}
+
 void DContainment::load()
 {
     const auto children = DPluginLoader::instance()->childrenPlugin(pluginId());
@@ -76,7 +88,7 @@ void DContainment::load()
     }
 }
 
-QObject *DContainment::itemFor(DApplet *applet)
+DAppletItem *DContainment::itemFor(DApplet *applet)
 {
     return DAppletItem::itemForApplet(applet);
 }

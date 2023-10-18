@@ -27,8 +27,6 @@ public:
     void setMetaData(const DPluginMetaData &metaData);
     QString pluginId() const;
 
-    QString url() const;
-
     DPluginMetaData pluginMetaData() const;
 
     virtual void init();

@@ -18,7 +18,6 @@ class DAppletItemPrivate
 public:
 
     DApplet *m_applet = nullptr;
-    DQmlEngine *m_engine = nullptr;
 };
 
 DAppletItem::DAppletItem(QQuickItem *parent)

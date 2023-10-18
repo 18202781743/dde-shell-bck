@@ -3,13 +3,13 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 import QtQuick 2.11
-import QtQuick.Controls 2.4
+import QtQuick.Controls 2.15
 
 import org.deepin.ds 1.0
 
 AppletItem {
-    width: 200
-    height: 100
+    implicitWidth: 200
+    implicitHeight: 100
     Rectangle {
         anchors.fill: parent
         color: "gray"

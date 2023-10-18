@@ -9,8 +9,8 @@ import org.deepin.ds 1.0
 import "control"
 
 AppletItem {
-    width: 100
-    height: 100
+    implicitWidth: 100
+    implicitHeight: 100
     Rectangle {
         anchors.fill: parent
         color: "green"

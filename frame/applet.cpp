@@ -5,7 +5,6 @@
 #include "applet.h"
 #include "applet_p.h"
 
-#include <QDir>
 #include <QLoggingCategory>
 
 DS_BEGIN_NAMESPACE
@@ -41,16 +40,6 @@ QString DApplet::pluginId() const
 {
     D_DC(DApplet);
     return d->m_metaData.pluginId();
-}
-
-QString DApplet::url() const
-{
-    D_DC(DApplet);
-    auto url = d->m_metaData.value("Url").toString();
-    if (url.isEmpty())
-        return QString();
-
-    return QDir(d->m_metaData.pluginDir()).absoluteFilePath(url);
 }
 
 DPluginMetaData DApplet::pluginMetaData() const
