@@ -26,8 +26,15 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(QT_VERSION_MAJOR 5)
-set(DTK_VERSION_MAJOR "")
+set(DS_BUILD_WITH_QT6 ON CACHE BOOL "Build dde-shell with Qt6")
+
+if (DS_BUILD_WITH_QT6)
+    set(QT_VERSION_MAJOR 6)
+    set(DTK_VERSION_MAJOR 6)
+else()
+    set(QT_VERSION_MAJOR 5)
+    set(DTK_VERSION_MAJOR "")
+endif()
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
@@ -42,8 +49,8 @@ set(QML_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/qt${QT_VERSION_MAJOR}/qml" CACHE ST
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(DDEShellPackageMacros)
 
-find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Core Gui Concurrent Quick)
-find_package(Dtk REQUIRED COMPONENTS Core Gui)
+find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Core Gui Concurrent Quick)
+find_package(Dtk${DTK_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui)
 
 add_subdirectory(frame)
 add_subdirectory(shell)

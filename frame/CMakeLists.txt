@@ -39,10 +39,10 @@ set_target_properties(dde-shell-frame PROPERTIES
 )
 target_link_libraries(dde-shell-frame
 PUBLIC
-    Dtk::Core
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Quick
+    Dtk${DTK_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Quick
 )
 target_include_directories(dde-shell-frame INTERFACE
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>

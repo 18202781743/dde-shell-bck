@@ -2,8 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Core Gui)
-
 add_library(ds-example-applet-data SHARED
     exampleapplet.h
     exampleapplet.cpp

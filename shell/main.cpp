@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QGuiApplication a(argc, argv);
     a.setOrganizationName("deepin");
-    a.setApplicationName("dde-shell");
+    a.setApplicationName("org.deepin.dde-shell");
 
     QCommandLineParser parser;
     parser.addHelpOption();
