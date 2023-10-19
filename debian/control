@@ -33,3 +33,10 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libdde-shell( =${binary:Version})
 Multi-Arch: same
 Description: <insert up to 60 chars description>
+
+Package: dde-shell-example
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libdde-shell( =${binary:Version})
+Multi-Arch: same
+Description: <insert up to 60 chars description>
+

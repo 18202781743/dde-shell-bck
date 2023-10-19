@@ -107,6 +107,12 @@ void DQmlEngine::completeCreate()
     d->m_component->completeCreate();
 }
 
+QObject *DQmlEngine::rootObject() const
+{
+    D_DC(DQmlEngine);
+    return d->m_rootObject;
+}
+
 QQmlEngine *DQmlEngine::engine()
 {
     D_D(DQmlEngine);

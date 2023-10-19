@@ -27,6 +27,7 @@ public:
 
     QObject *beginCreate();
     void completeCreate();
+    QObject *rootObject() const;
 
     QQmlEngine *engine();
 };
