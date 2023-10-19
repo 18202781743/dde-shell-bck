@@ -6,6 +6,7 @@
 
 #include "dsglobal.h"
 
+#include <DObject>
 #include <QQmlEngine>
 
 DS_BEGIN_NAMESPACE
@@ -15,22 +16,19 @@ class DQmlEnginePrivate;
 /**
  * @brief UI插件实例项
  */
-class Q_DECL_EXPORT DQmlEngine : public QObject
+class Q_DECL_EXPORT DQmlEngine : public QObject, public DTK_CORE_NAMESPACE::DObject
 {
     Q_OBJECT
+    D_DECLARE_PRIVATE(DQmlEngine)
 public:
-    DQmlEngine(DApplet *applet, QObject *parent = nullptr);
-    DQmlEngine(QObject *parent = nullptr);
+    explicit DQmlEngine(QObject *parent = nullptr);
+    explicit DQmlEngine(DApplet *applet, QObject *parent = nullptr);
     virtual ~DQmlEngine();
 
     QObject *beginCreate();
     void completeCreate();
 
-    QObject *create();
     QQmlEngine *engine();
-
-private:
-    DQmlEnginePrivate *d = nullptr;
 };
 
 DS_END_NAMESPACE

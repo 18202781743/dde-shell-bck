@@ -6,6 +6,7 @@
 
 #include "appletitem.h"
 
+#include "qmlengine.h"
 #include <dobject_p.h>
 #include <QVariant>
 
@@ -20,6 +21,7 @@ public:
     }
 
     DApplet *m_applet = nullptr;
+    DQmlEngine *m_engine = nullptr;
 };
 
 DS_END_NAMESPACE

@@ -41,17 +41,24 @@ DAppletItem *DAppletItem::itemForApplet(DApplet *applet)
     if (it != g_appletItems.constEnd())
         return it.value();
 
-    DQmlEngine *engine = new DQmlEngine(applet, applet);
+    QScopedPointer<DQmlEngine> engine(new DQmlEngine(applet, applet));
 
     auto rootObject = engine->beginCreate();
+    if (!rootObject) {
+        return nullptr;
+    }
 
     auto item = qobject_cast<DAppletItem *>(rootObject);
-    if (!item)
+    if (!item) {
+        rootObject->deleteLater();
         return nullptr;
+    }
 
     item->d_func()->m_applet = applet;
+    item->d_func()->m_engine = engine.take();
     g_appletItems[applet] = item;
-    engine->completeCreate();
+
+    item->d_func()->m_engine->completeCreate();
 
     return item;
 }
