@@ -1,4 +1,2 @@
 usr/lib/*/lib*.so.*
-usr/lib/*/*dde-shell/*
 usr/lib/*/qt6/qml/org/deepin/ds/*
-usr/share/dde-shell/*

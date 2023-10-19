@@ -1,6 +1,6 @@
 include(CMakeParseArguments)
 
-macro(ds_install_package)
+macro(ds_build_package)
     set(oneValueArgs PACKAGE TARGET PACKAGE_ROOT_DIR)
     cmake_parse_arguments(_config "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -16,7 +16,6 @@ macro(ds_install_package)
     add_custom_command(TARGET ${_config_PACKAGE}_package
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${package_root_dir} ${package_dirs}
     )
-    install(DIRECTORY ${package_dirs} DESTINATION ${DDE_SHELL_PACKAGE_INSTALL_DIR}/${_config_PACKAGE})
 
     if (DEFINED _config_TARGET)
         set_target_properties(${_config_TARGET} PROPERTIES
@@ -24,6 +23,14 @@ macro(ds_install_package)
             OUTPUT_NAME ${_config_PACKAGE}
             LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/plugins/
         )
-        install(TARGETS ${_config_TARGET} DESTINATION ${DDE_SHELL_PLUGIN_INSTALL_DIR}/)
     endif()
 endmacro()
+
+function(ds_install_package)
+    ds_build_package(${ARGN})
+    install(DIRECTORY ${package_dirs} DESTINATION ${DDE_SHELL_PACKAGE_INSTALL_DIR}/${_config_PACKAGE})
+
+    if (DEFINED _config_TARGET)
+        install(TARGETS ${_config_TARGET} DESTINATION ${DDE_SHELL_PLUGIN_INSTALL_DIR}/)
+    endif()
+endfunction()
