@@ -4,6 +4,8 @@
 
 #include <QCommandLineOption>
 #include <QCommandLineParser>
+#include <QDBusConnection>
+#include <QDBusError>
 
 #include <DLog>
 #include <DGuiApplicationHelper>
@@ -36,6 +38,11 @@ int main(int argc, char *argv[])
     Dtk::Core::DLogManager::registerFileAppender();
     Dtk::Core::DLogManager::registerJournalAppender();
     qInfo() << "Log path is:" << Dtk::Core::DLogManager::getlogFilePath();
+
+    QDBusConnection bus = QDBusConnection::sessionBus();
+    if (!bus.registerService("org.deepin.dde.Shell")) {
+        qWarning() << "register failed" << bus.lastError().message();
+    }
 
     QList<QString> pluginIds;
     QList<DApplet *> applets;

@@ -55,6 +55,7 @@ find_package(WaylandProtocols REQUIRED)
 add_subdirectory(frame)
 add_subdirectory(shell)
 add_subdirectory(example)
+add_subdirectory(coronas)
 
 configure_package_config_file(
     "${CMAKE_CURRENT_LIST_DIR}/misc/DDEShellConfig.cmake.in"
