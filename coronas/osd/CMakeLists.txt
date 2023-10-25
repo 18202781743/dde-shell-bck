@@ -18,6 +18,6 @@ target_link_libraries(osdcorona PRIVATE
 
 ds_install_package(PACKAGE org.deepin.ds.osd TARGET osdcorona)
 
-add_subdirectory(default)
-add_subdirectory(audio)
+#add_subdirectory(default)
+#add_subdirectory(audio)
 add_subdirectory(displaymode)

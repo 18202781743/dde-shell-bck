@@ -12,30 +12,56 @@ import org.deepin.dtk 1.0 as D
 
 AppletItem {
     id: control
-    implicitHeight: view.contentHeight
-    implicitWidth: view.contentWidth
+    anchors.fill: parent
+    height: view.height
+    width: view.width
 
     function match(osdType)
     {
+        syncModel()
         return Applet.state === 2 && osdType === "SwitchMonitors"
     }
 
     ListModel {
         id: displayModeModel
-        ListElement {mode: 1; iconName: "osd_display_copy"; text: qsTr("Duplicate")}
-        ListElement {mode: 2; iconName: "osd_display_expansion"; text: qsTr("Extend")}
-        ListElement {mode: 3; iconName: "osd_display_custom1"; text: "placeholder"}
-        ListElement {mode: 3; iconName: "osd_display_custom2"; text: "placeholder"}
+//        ListElement {mode: 1; iconName: "osd_display_copy"; text: qsTr("Duplicate")}
+//        ListElement {mode: 2; iconName: "osd_display_expansion"; text: qsTr("Extend")}
+//        ListElement {mode: 3; iconName: "osd_display_custom1"; text: "placeholder"}
+//        ListElement {mode: 3; iconName: "osd_display_custom2"; text: "placeholder"}
+    }
+
+    function syncModel()
+    {
+        displayModeModel.clear()
+        displayModeModel.append({
+                                    mode: 1,
+                                    iconName: "osd_display_copy",
+                                    text: qsTr("Duplicate")
+                                })
+        displayModeModel.append({
+                                    mode: 2,
+                                    iconName: "osd_display_expansion",
+                                    text: qsTr("Extend")
+                                })
+        for (var i = 0; i < Applet.outputNames.lenght; i++) {
+
+            displayModeModel.append({
+                                        mode: 3,
+                                        iconName: "osd_display_custom" + i,
+                                        text: qsTr("Only on %1").arg(Applet.outputNames[i])
+                                    })
+        }
     }
 
     ListView {
         id: view
-        anchors.fill: parent
+        width: contentWidth
+        height: contentHeight
         model: displayModeModel
 
         delegate: RowLayout {
-            width: 200
-            height: 30
+            width: parent.width
+            height: 40
             visible: model.mode !== 3 || Applet.outputNames.length === 2
 
             D.DciIcon {
@@ -55,7 +81,8 @@ AppletItem {
                 Layout.topMargin: 13
                 font: D.DTK.fontManager.t4
                 Layout.alignment: Qt.AlignVCenter
-                text: model.mode === 3 ? qsTr("Only on %1").arg(Applet.outputNames[index - 2]) : model.text
+                text: model.text
+//                text: model.mode === 3 ? qsTr("Only on %1").arg(Applet.outputNames[index - 2]) : model.text
             }
         }
     }

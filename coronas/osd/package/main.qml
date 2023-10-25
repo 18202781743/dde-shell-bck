@@ -13,34 +13,15 @@ import org.deepin.dtk 1.0 as D
 Window {
     id: root
     visible: true
-    D.DWindow.enabled: true
-    width: content.width
-    height: content.height || 60
+//    D.DWindow.enabled: true
+    width: Applet.appletItems.lenght > 0 ? Applet.appletItems[0].width : 10
+    height: Applet.appletItems.lenght > 0 ? Applet.appletItems[0].height : 10
 //    DLayerShellWindow.anchors: DLayerShellWindow.AnchorTop
 //    DLayerShellWindow.layer: DLayerShellWindow.LayerTop
 
-    D.Control {
+    Control {
         id: content
-        anchors.fill: parent
-        contentItem: Repeater {
-            id: repeater
-            model: Applet.appletItems
-            delegate: Loader {
-                id: loader
-                anchors.fill: parent
-                active: modelData.match(Applet.osdType)
-                visible: active
-                sourceComponent: Control {
-                    id: impl
-                    anchors.fill: parent
-                    contentItem: modelData
-                }
-            }
-        }
-
-        background: Rectangle {
-            color: "gray"
-        }
+        contentItem: Applet.appletItems[0]
     }
     Timer {
         running: true
@@ -48,7 +29,7 @@ Window {
         repeat: true
         onTriggered: {
 
-                console.log("dddddddddddddddd", repeater.height, root.height)
+                console.log("dddddddddddddddd", content.height, root.height)
         }
     }
 }
