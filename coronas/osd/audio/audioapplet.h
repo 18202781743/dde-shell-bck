@@ -11,41 +11,40 @@ DS_BEGIN_NAMESPACE
 class Q_DECL_EXPORT AudioApplet : public DApplet
 {
     Q_OBJECT
-    Q_PROPERTY(bool mute READ mute NOTIFY muteChanged FINAL)
-    Q_PROPERTY(double volume READ volume NOTIFY volumeChanged FINAL)
-    Q_PROPERTY(double increaseVolume READ increaseVolume NOTIFY increaseVolumeChanged FINAL)
+    Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged FINAL)
     Q_PROPERTY(double volumeValue READ volumeValue NOTIFY volumeValueChanged FINAL)
+    Q_PROPERTY(bool increaseVolume READ increaseVolume WRITE setIncreaseVolume NOTIFY increaseVolumeChanged FINAL)
 public:
     explicit AudioApplet(QObject *parent = nullptr);
     virtual void init() override;
 
-    double increaseVolume() const;
-    void setIncreaseVolume(double newIncreaseVolume);
-
     double volumeValue() const;
     void setVolumeValue(double newVolumeValue);
 
-    bool mute() const;
-    void setMute(bool newMute);
+    QString iconName() const;
+    void setIconName(const QString &newIconName);
 
-    double volume() const;
-    void setVolume(double newVolume);
+    double volumeRatio() const;
+    void setVolumeRatio(double newVolumeRatio);
+
+    bool increaseVolume() const;
+    void setIncreaseVolume(bool newIncreaseVolume);
 
 Q_SIGNALS:
-
+    void volumeValueChanged();
+    void iconNameChanged();
+    void volumeRatioChanged();
     void increaseVolumeChanged();
 
-    void volumeValueChanged();
-
-    void muteChanged();
-
-    void volumeChanged();
-
+private:
+    QString fetchIconName() const;
+    double fetchVolume() const;
+    bool fetchIncreaseVolume() const;
 private:
     double m_increaseVolume = 1.0;
     double m_volumeValue = 1.0;
-    bool m_mute;
-    double m_volume;
+    QString m_iconName;
+    double m_volumeRatio;
 };
 
 DS_END_NAMESPACE

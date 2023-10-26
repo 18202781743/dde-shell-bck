@@ -18,27 +18,18 @@ AppletItem {
 
     function match(osdType)
     {
-        return Applet.state === 2 && osdType === "SwitchMonitors"
+        syncModel()
+        return osdType === "SwitchLayout"
     }
+
     ListView {
         id: view
         width: contentWidth
         height: contentHeight
-        model: Applet.planItems
+        model: Applet.layouts
 
         delegate: RowLayout {
             height: 40
-
-            D.DciIcon {
-                sourceSize {
-                    width: 32
-                    height: 32
-                }
-                Layout.alignment: Qt.AlignLeft
-                Layout.leftMargin: 14
-                Layout.topMargin: 14
-                name: model.iconName
-            }
 
             Text {
                 Layout.fillWidth: true
@@ -47,7 +38,7 @@ AppletItem {
                 font: D.DTK.fontManager.t4
                 Layout.alignment: Qt.AlignVCenter
                 text: model.text
-                color: Applet.currentPlanItem.key === model.key ? "blue" : "undefined"
+                color: Applet.currentLayout === model.key ? "blue" : "undefined"
             }
         }
     }

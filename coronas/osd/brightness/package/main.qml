@@ -18,14 +18,6 @@ AppletItem {
         return types.indexOf(osdType) >= 0
     }
 
-    property var types: ["AudioUp",
-        "AudioDown",
-        "AudioMute",
-        "AudioUpAsh",
-        "AudioDownAsh",
-        "AudioMuteAsh"
-    ]
-
     RowLayout {
         anchors.leftMargin: 68
         anchors.rightMargin: 26
@@ -42,20 +34,12 @@ AppletItem {
             name: Applet.iconName
         }
 
-        D.ProgressBar {
+        ProgressBar {
             Layout.preferredWidth: 200
             Layout.topMargin: 13
-            Layout.alignment: Qt.AlignVCenter
             from: 0
-            value: Applet.volumeValue / (Applet.increaseVolume ? 1.5 : 1.0)
+            value: Applet.brightness
             to: 1
-        }
-
-        Text {
-            Layout.topMargin: 13
-            font: D.DTK.fontManager.t4
-            Layout.alignment: Qt.AlignVCenter
-            text: Applet.volumeValue * 100
         }
     }
 }

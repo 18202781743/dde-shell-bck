@@ -9,6 +9,7 @@ add_library(osd-displaymode SHARED
 
 target_link_libraries(osd-displaymode PRIVATE
     dde-shell-frame
+    Qt${QT_MAJOR_VERSION}::DBus
 )
 
 ds_install_package(PACKAGE org.deepin.ds.osd.displaymode TARGET osd-displaymode)

@@ -9,6 +9,7 @@ add_library(osd-audio SHARED
 
 target_link_libraries(osd-audio PRIVATE
     dde-shell-frame
+    Qt${QT_MAJOR_VERSION}::DBus
 )
 
 ds_install_package(PACKAGE org.deepin.ds.osd.audio TARGET osd-audio)
