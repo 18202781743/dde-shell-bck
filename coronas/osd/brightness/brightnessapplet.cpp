@@ -28,16 +28,20 @@ BrightnessApplet::BrightnessApplet(QObject *parent)
 
 void BrightnessApplet::init()
 {
-    auto brightness = fetchBrightness();
-
-    setBrightness(brightness);
-    auto icon = fetchIconName();
-    setIconName(icon);
 }
 
 QString BrightnessApplet::iconName() const
 {
     return m_iconName;
+}
+
+void BrightnessApplet::sync()
+{
+    auto brightness = fetchBrightness();
+
+    setBrightness(brightness);
+    auto icon = fetchIconName();
+    setIconName(icon);
 }
 
 void BrightnessApplet::setIconName(const QString &newIconName)

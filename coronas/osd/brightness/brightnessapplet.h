@@ -20,6 +20,8 @@ public:
     double brightness() const;
     QString iconName() const;
 
+    Q_INVOKABLE void sync();
+
 Q_SIGNALS:
     void brightnessChanged();
     void iconNameChanged();

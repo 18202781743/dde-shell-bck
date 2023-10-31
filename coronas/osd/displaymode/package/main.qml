@@ -12,17 +12,24 @@ import org.deepin.dtk 1.0 as D
 
 AppletItem {
     id: control
-    anchors.fill: parent
-    height: view.height
-    width: view.width
+    implicitWidth: childrenRect.width
+    implicitHeight: childrenRect.height
 
+    function update(osdType)
+    {
+        if (match(osdType)) {
+            Applet.sync()
+            return true
+        }
+        return false
+    }
     function match(osdType)
     {
-        return Applet.state === 2 && osdType === "SwitchMonitors"
+        return osdType === "SwitchMonitors"
     }
     ListView {
         id: view
-        width: contentWidth
+        width: 300
         height: contentHeight
         model: Applet.planItems
 

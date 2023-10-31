@@ -45,6 +45,17 @@ QQmlListProperty<DPItem> DisPlayModeApplet::planItems()
     return QQmlListProperty<DPItem>(this, &m_planItems);
 }
 
+void DisPlayModeApplet::sync()
+{
+    fetchPlanItems();
+    auto current = fetchCurrentPlanItem();
+    setCurrentPlanItem(current);
+    auto state = fetchState();
+
+    setState(state);
+    Q_EMIT planItemsChanged();
+}
+
 void DisPlayModeApplet::setCurrentPlanItem(DPItem *newCurrentPlanItem)
 {
     if (m_currentPlanItem == newCurrentPlanItem)
@@ -74,7 +85,6 @@ void DisPlayModeApplet::fetchPlanItems()
             m_planItems << new DPItem(tr("Only on %1").arg(item), item, QString("osd_display_custom%1").arg(i + 1), DPItem::Single, this);
         }
     }
-    Q_EMIT planItemsChanged();
 }
 
 DPItem *DisPlayModeApplet::fetchCurrentPlanItem() const
@@ -167,12 +177,7 @@ DisPlayModeApplet::DisPlayModeApplet(QObject *parent)
 
 void DisPlayModeApplet::init()
 {
-    fetchPlanItems();
-    auto current = fetchCurrentPlanItem();
-    setCurrentPlanItem(current);
-    auto state = fetchState();
-
-    setState(state);
+    sync();
 }
 
 D_APPLET_CLASS(DisPlayModeApplet)

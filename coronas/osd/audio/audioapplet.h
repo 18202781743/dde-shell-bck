@@ -30,6 +30,8 @@ public:
     bool increaseVolume() const;
     void setIncreaseVolume(bool newIncreaseVolume);
 
+    Q_INVOKABLE void sync();
+
 Q_SIGNALS:
     void volumeValueChanged();
     void iconNameChanged();

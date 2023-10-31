@@ -4,7 +4,6 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 
 import org.deepin.ds 1.0
@@ -12,24 +11,27 @@ import org.deepin.dtk 1.0 as D
 
 Window {
     id: root
-    visible: true
-//    D.DWindow.enabled: true
-    width: Applet.appletItems.lenght > 0 ? Applet.appletItems[0].width : 10
-    height: Applet.appletItems.lenght > 0 ? Applet.appletItems[0].height : 10
-//    DLayerShellWindow.anchors: DLayerShellWindow.AnchorTop
-//    DLayerShellWindow.layer: DLayerShellWindow.LayerTop
+    visible: Applet.visible
+    D.DWindow.enabled: true
 
-    Control {
-        id: content
-        contentItem: Applet.appletItems[0]
-    }
-    Timer {
-        running: true
-        interval: 2000
-        repeat: true
-        onTriggered: {
+    width: osdView ? osdView.width : 100
+    height: osdView ? osdView.height : 100
 
-                console.log("dddddddddddddddd", content.height, root.height)
+    property Item osdView
+
+    Repeater {
+        model: Applet.appletItems
+        delegate: Control {
+            visible: modelData.update(Applet.osdType)
+            contentItem: modelData
+            padding: 20
+            onVisibleChanged: {
+                if (visible) {
+                    root.osdView = this
+                }
+            }
+            background: D.FloatingPanel {
+            }
         }
     }
 }

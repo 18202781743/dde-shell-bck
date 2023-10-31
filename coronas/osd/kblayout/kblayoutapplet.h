@@ -42,6 +42,8 @@ public:
     QString currentLayout() const;
     QQmlListProperty<KBLayout> layouts();
 
+    Q_INVOKABLE void sync();
+
 Q_SIGNALS:
     void currentLayoutChanged();
     void layoutsChanged();

@@ -14,16 +14,9 @@ Q_LOGGING_CATEGORY(osdLog, "dde.shell.osd")
 
 DS_BEGIN_NAMESPACE
 
-
-
 QString OsdCorona::osdType() const
 {
     return m_osdType;
-}
-
-QString OsdCorona::iconName() const
-{
-    return m_iconName;
 }
 
 bool OsdCorona::visible() const
@@ -79,20 +72,12 @@ void OsdCorona::init()
     DCorona::init();
 }
 
-void OsdCorona::setIconName(const QString &iconName)
-{
-    if (m_iconName == iconName)
-        return;
-    m_iconName = iconName;
-    emit iconNameChanged();
-}
-
 void OsdCorona::setOsdType(const QString &osdType)
 {
-    if (m_osdType == osdType)
-        return;
+//    if (m_osdType == osdType)
+//        return;
     m_osdType = osdType;
-    emit osdTypeChanged();
+    emit osdTypeChanged(m_osdType);
 }
 
 D_APPLET_CLASS(OsdCorona)

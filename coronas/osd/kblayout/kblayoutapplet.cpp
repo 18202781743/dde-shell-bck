@@ -71,6 +71,9 @@ void KBLayoutApplet::fetchLayouts()
     }
     const auto layouts = qdbus_cast<QMap<QString, QString>>(layoutList.value());
 
+    qDeleteAll(m_layouts);
+    m_layouts.clear();
+
     for (auto item : userLayouts) {
         const auto text = layouts.value(item, item);
         auto layoutItem = new KBLayout(item, text, this);
@@ -96,13 +99,18 @@ KBLayoutApplet::KBLayoutApplet(QObject *parent)
 
 void KBLayoutApplet::init()
 {
-    fetchLayouts();
-    fetchCurrentLayout();
+    sync();
 }
 
 QQmlListProperty<KBLayout> KBLayoutApplet::layouts()
 {
     return QQmlListProperty<KBLayout>(this, &m_layouts);
+}
+
+void KBLayoutApplet::sync()
+{
+    fetchLayouts();
+    fetchCurrentLayout();
 }
 
 D_APPLET_CLASS(KBLayoutApplet)

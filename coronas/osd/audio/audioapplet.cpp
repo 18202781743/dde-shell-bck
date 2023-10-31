@@ -27,6 +27,15 @@ void AudioApplet::setIncreaseVolume(bool newIncreaseVolume)
     emit increaseVolumeChanged();
 }
 
+void AudioApplet::sync()
+{
+    setVolumeValue(fetchVolume());
+
+    setIncreaseVolume(fetchIncreaseVolume());
+
+    setIconName(fetchIconName());
+}
+
 static DDBusSender audioInter()
 {
     return DDBusSender().service("org.deepin.dde.Audio1")
@@ -116,11 +125,6 @@ AudioApplet::AudioApplet(QObject *parent)
 
 void AudioApplet::init()
 {
-    setVolumeValue(fetchVolume());
-
-    setIncreaseVolume(fetchIncreaseVolume());
-
-    setIconName(fetchIconName());
 }
 
 double AudioApplet::volumeValue() const

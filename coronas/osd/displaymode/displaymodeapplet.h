@@ -61,6 +61,8 @@ public:
     DPItem *currentPlanItem() const;
     QQmlListProperty<DPItem> planItems();
 
+    Q_INVOKABLE void sync();
+
 Q_SIGNALS:
     void currentPlanItemChanged();
     void planItemsChanged();

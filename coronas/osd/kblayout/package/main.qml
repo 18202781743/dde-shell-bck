@@ -12,19 +12,25 @@ import org.deepin.dtk 1.0 as D
 
 AppletItem {
     id: control
-    anchors.fill: parent
-    height: view.height
-    width: view.width
+    implicitWidth: childrenRect.width
+    implicitHeight: childrenRect.height
 
+    function update(osdType)
+    {
+        if (match(osdType)) {
+            Applet.sync()
+            return true
+        }
+        return false
+    }
     function match(osdType)
     {
-        syncModel()
         return osdType === "SwitchLayout"
     }
 
     ListView {
         id: view
-        width: contentWidth
+        width: 600
         height: contentHeight
         model: Applet.layouts
 

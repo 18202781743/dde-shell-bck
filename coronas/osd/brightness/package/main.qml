@@ -12,16 +12,33 @@ import org.deepin.dtk 1.0 as D
 
 AppletItem {
     id: control
+    implicitWidth: childrenRect.width
+    implicitHeight: childrenRect.height
+
+    function update(osdType)
+    {
+        if (match(osdType)) {
+            Applet.sync()
+            return true
+        }
+        return false
+    }
 
     function match(osdType)
     {
         return types.indexOf(osdType) >= 0
     }
 
+    property var types: [
+        "BrightnessUp",
+        "BrightnessDown",
+        "BrightnessUpAsh",
+        "BrightnessDownAsh"
+    ]
+
     RowLayout {
         anchors.leftMargin: 68
         anchors.rightMargin: 26
-        anchors.fill: parent
 
         D.DciIcon {
             sourceSize {
