@@ -51,7 +51,7 @@ AppletItem {
             name: Applet.iconName
         }
 
-        ProgressBar {
+        D.ProgressBar {
             Layout.preferredWidth: 200
             Layout.topMargin: 13
             from: 0

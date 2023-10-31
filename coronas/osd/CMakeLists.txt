@@ -2,13 +2,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-qt_add_resources(RESOURCES
-    image.qrc
-)
 add_library(osdcorona SHARED
     osdcorona.cpp
     osdcorona.h
-    ${RESOURCES}
     test.sh
 )
 

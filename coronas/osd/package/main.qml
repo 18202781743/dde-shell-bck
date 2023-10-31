@@ -30,8 +30,7 @@ Window {
                     root.osdView = this
                 }
             }
-            background: D.FloatingPanel {
-            }
+            background: D.FloatingPanel { }
         }
     }
 }
