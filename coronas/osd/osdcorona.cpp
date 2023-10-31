@@ -10,9 +10,9 @@
 #include <QTimer>
 #include <QLoggingCategory>
 
-Q_LOGGING_CATEGORY(osdLog, "dde.shell.osd")
-
 DS_BEGIN_NAMESPACE
+
+Q_LOGGING_CATEGORY(osdLog, "dde.shell.osd")
 
 QString OsdCorona::osdType() const
 {
@@ -27,6 +27,8 @@ bool OsdCorona::visible() const
 void OsdCorona::showText(const QString &text)
 {
     qCInfo(osdLog()) << "show text" << text;
+    m_osdTimer->setInterval(text == "SwitchWM3D" ? 2000 : 1000);
+
     setOsdType(text);
     showOsd();
 }
@@ -66,7 +68,7 @@ void OsdCorona::init()
                                                  QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals);
 
     m_osdTimer = new QTimer(this);
-    m_osdTimer->setInterval(3000);
+    m_osdTimer->setInterval(m_interval);
     m_osdTimer->setSingleShot(true);
     QObject::connect(m_osdTimer, &QTimer::timeout, this, &OsdCorona::hideOsd);
     DCorona::init();

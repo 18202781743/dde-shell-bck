@@ -9,10 +9,13 @@
 #include <QDBusConnection>
 #include <QDBusPendingCall>
 #include <QDBusReply>
+#include <QLoggingCategory>
 
 #include <DDBusSender>
 
 DS_BEGIN_NAMESPACE
+
+Q_LOGGING_CATEGORY(osdKBLog, "dde.shell.osd.kblayout")
 
 static DDBusSender keyboardInter()
 {
@@ -57,7 +60,7 @@ void KBLayoutApplet::fetchLayouts()
     auto inter = keyboardInter();
     QDBusReply<QVariant> userLayoutList = inter.property("UserLayoutList").get();
     if (!userLayoutList.isValid()) {
-        qWarning() << "Failed to fetch UserLayoutList" << userLayoutList.error();
+        qCWarning(osdKBLog) << "Failed to fetch UserLayoutList" << userLayoutList.error();
         return;
     }
     auto userLayouts = qdbus_cast<QStringList>(userLayoutList.value());
@@ -66,7 +69,7 @@ void KBLayoutApplet::fetchLayouts()
     QDBusReply<QDBusArgument> layoutList(inter.method("LayoutList").call());
 
     if (!layoutList.isValid()) {
-        qWarning() << "Failed to fetch LayoutList" << layoutList.error();
+        qCWarning(osdKBLog) << "Failed to fetch LayoutList" << layoutList.error();
         return;
     }
     const auto layouts = qdbus_cast<QMap<QString, QString>>(layoutList.value());
@@ -86,7 +89,7 @@ void KBLayoutApplet::fetchCurrentLayout()
 {
     QDBusReply<QVariant> currentLayoutList = keyboardInter().property("CurrentLayout").get();
     if (!currentLayoutList.isValid()) {
-        qWarning() << "Failed to fetch CurrentLayout" << currentLayoutList.error();
+        qCWarning(osdKBLog) << "Failed to fetch CurrentLayout" << currentLayoutList.error();
         return;
     }
     setCurrentLayout(qdbus_cast<QString>(currentLayoutList));
@@ -99,7 +102,6 @@ KBLayoutApplet::KBLayoutApplet(QObject *parent)
 
 void KBLayoutApplet::init()
 {
-    sync();
 }
 
 QQmlListProperty<KBLayout> KBLayoutApplet::layouts()
@@ -111,6 +113,27 @@ void KBLayoutApplet::sync()
 {
     fetchLayouts();
     fetchCurrentLayout();
+}
+
+void KBLayoutApplet::next()
+{
+    auto it = std::find_if(m_layouts.begin(), m_layouts.end(), [this](const KBLayout *item) {
+        return m_currentLayout == item->key();
+    });
+    if (it != m_layouts.end()) {
+        auto offset = it - m_layouts.begin();
+        auto nextIndex = (offset + 1) % m_layouts.count();
+        const auto item = m_layouts.at(nextIndex);
+        Q_ASSERT(item);
+        setCurrentLayout(item->key());
+
+        QDBusReply<void> reply = keyboardInter().property("CurrentLayout").set(m_currentLayout);
+        if (!reply.isValid()) {
+            qCWarning(osdKBLog) << "Failed to call CurrentLayout" << reply.error();
+            return;
+        }
+        qCInfo(osdKBLog) << "next keyboard layout" << m_currentLayout;
+    }
 }
 
 D_APPLET_CLASS(KBLayoutApplet)

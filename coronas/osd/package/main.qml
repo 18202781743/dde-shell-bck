@@ -13,6 +13,10 @@ Window {
     id: root
     visible: Applet.visible
     D.DWindow.enabled: true
+    D.DWindow.windowRadius: 18
+    DLayerShellWindow.bottomMargin: 400
+    DLayerShellWindow.layer: DLayerShellWindow.LayerOverlay
+    DLayerShellWindow.anchors: DLayerShellWindow.AnchorBottom
 
     width: osdView ? osdView.width : 100
     height: osdView ? osdView.height : 100
@@ -21,16 +25,19 @@ Window {
 
     Repeater {
         model: Applet.appletItems
-        delegate: Control {
-            visible: modelData.update(Applet.osdType)
-            contentItem: modelData
-            padding: 20
-            onVisibleChanged: {
-                if (visible) {
+        delegate: Loader {
+            active: modelData.update(Applet.osdType)
+            onActiveChanged: {
+                if (active) {
                     root.osdView = this
                 }
             }
-            background: D.FloatingPanel { }
+
+            sourceComponent: Control {
+                contentItem: model.modelData
+                padding: 10
+//                background: D.FloatingPanel { }
+            }
         }
     }
 }

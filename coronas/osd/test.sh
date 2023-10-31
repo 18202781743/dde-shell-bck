@@ -1,16 +1,29 @@
 #!/bin/bash
 
+pkill dde-shell
+
 cmake --build /home/out/dde-shell-Debug-qt6/
 
 /home/out/dde-shell-Debug-qt6/shell/dde-shell -c org.deepin.ds.osd &
 
 sleep 1
 
-audio=("AudioUp" )
-#brightness=("BrightnessUp" "BrightnessDown" "BrightnessUpAsh" "BrightnessDownAsh")
-default=("WLANOn" "WLANOff")
+#busctl --user monitor --match="type='method_call',eavesdrop='true',destination='org.deepin.dde.Osd1'" -j |jq --unbuffered -r '.payload.data[0]' |xargs -I {}  dbus-send --session --type=method_call --print-reply --dest=org.deepin.dde.Shell /org/deepin/osdService org.deepin.osdService.showText string:{}
+
+
+#audio=("AudioUp" )
+#brightness=("BrightnessUp")
+#default=("WLANOn" "WLANOff")
+#display=("SwitchMonitors" "DirectSwitchLayout")
+#kblayout=("SwitchLayout" "SwitchLayout")
+
+
+audio=("AudioUp" "AudioDown")
+brightness=("BrightnessUp" "BrightnessDown")
+default=("WLANOn" "CapsLockOn")
 display=("SwitchMonitors")
-#kblayout=("SwitchLayout")
+kblayout=("SwitchLayout")
+
 
 #audio=("AudioUp" "AudioDown" "AudioMute" "AudioUpAsh" "AudioDownAsh" "AudioMuteAsh")
 #brightness=("BrightnessUp" "BrightnessDown" "BrightnessUpAsh" "BrightnessDownAsh")
@@ -18,7 +31,7 @@ display=("SwitchMonitors")
 #display=("SwitchMonitors")
 #kblayout=("SwitchLayout")
 
-for type in  ${kblayout[@]} ${display[@]} ${audio[@]} ${brightness[@]} ${default[@]} ;
+for type in  ${audio[@]} ${kblayout[@]} ${display[@]} ${brightness[@]} ${default[@]} ;
 do
 
 echo dbus-send --session --type=method_call --print-reply --dest=org.deepin.dde.Shell /org/deepin/osdService org.deepin.osdService.showText string:$type
@@ -28,4 +41,4 @@ sleep 1
 
 done
 
-jobs -p |xargs kill
+#jobs -p |xargs kill

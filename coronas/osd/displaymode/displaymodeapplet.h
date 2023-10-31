@@ -62,6 +62,7 @@ public:
     QQmlListProperty<DPItem> planItems();
 
     Q_INVOKABLE void sync();
+    Q_INVOKABLE void next();
 
 Q_SIGNALS:
     void currentPlanItemChanged();

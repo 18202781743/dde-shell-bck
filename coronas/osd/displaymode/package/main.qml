@@ -19,13 +19,20 @@ AppletItem {
     {
         if (match(osdType)) {
             Applet.sync()
+
+            if (osdType === "DirectSwitchLayout") {
+                if (Applet.state !== 2) {
+                    Applet.next()
+                }
+            }
+
             return true
         }
         return false
     }
     function match(osdType)
     {
-        return osdType === "SwitchMonitors"
+        return osdType === "SwitchMonitors" || osdType === "DirectSwitchLayout"
     }
     ListView {
         id: view
@@ -43,14 +50,11 @@ AppletItem {
                 }
                 Layout.alignment: Qt.AlignLeft
                 Layout.leftMargin: 14
-                Layout.topMargin: 14
                 name: model.iconName
             }
 
             Text {
                 Layout.fillWidth: true
-                Layout.leftMargin: 68
-                Layout.topMargin: 13
                 font: D.DTK.fontManager.t4
                 Layout.alignment: Qt.AlignVCenter
                 text: model.text

@@ -47,16 +47,19 @@ AppletItem {
             }
             Layout.alignment: Qt.AlignLeft
             Layout.leftMargin: 14
-            Layout.topMargin: 14
             name: Applet.iconName
         }
 
         D.ProgressBar {
             Layout.preferredWidth: 200
-            Layout.topMargin: 13
             from: 0
             value: Applet.brightness
             to: 1
+        }
+
+        Text {
+            font: D.DTK.fontManager.t4
+            text: Number(Applet.brightness * 100).toFixed(0) + "%"
         }
     }
 }

@@ -41,6 +41,7 @@ private:
     bool m_visible = false;
     QTimer *m_osdTimer = nullptr;
     QString m_osdType;
+    int m_interval {2000};
 };
 
 DS_END_NAMESPACE

@@ -47,25 +47,51 @@ AppletItem {
                 width: 32
                 height: 32
             }
-            Layout.alignment: Qt.AlignLeft
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.leftMargin: 14
-            Layout.topMargin: 14
             name: Applet.iconName
         }
 
-        D.ProgressBar {
-            Layout.preferredWidth: 200
-            Layout.topMargin: 13
+        ColumnLayout {
+            spacing: 5
             Layout.alignment: Qt.AlignVCenter
-            from: 0
-            value: Applet.volumeValue / (Applet.increaseVolume ? 1.5 : 1.0)
-            to: 1
+            Loader {
+                visible: active
+                active: Applet.increaseVolume
+                sourceComponent: scaleCom
+                x: progressBar.visualPosition * 1.5 * progressBar.width
+            }
+
+            D.ProgressBar {
+                id: progressBar
+                Layout.preferredWidth: 200
+                Layout.alignment: Qt.AlignVCenter
+                from: 0
+                value: Applet.volumeValue / (Applet.increaseVolume ? 1.5 : 1.0)
+                to: 1
+            }
+
+            Loader {
+                visible: active
+                active: Applet.increaseVolume
+                sourceComponent: scaleCom
+                x: progressBar.visualPosition * 1.5 * progressBar.width
+            }
         }
 
         Text {
-            Layout.topMargin: 13
+            Layout.alignment: Qt.AlignVCenter
             font: D.DTK.fontManager.t4
-            text: Applet.volumeValue * 100
+            text: Number(Applet.volumeValue * 100).toFixed(0) + "%"
+        }
+    }
+
+    Component {
+        id: scaleCom
+        Rectangle {
+            height: 6
+            width: 2
+            color: "gray"
         }
     }
 }

@@ -6,14 +6,19 @@
 
 #include "pluginfactory.h"
 
-#include <DConfig>
 #include <QDBusConnection>
 #include <QDBusPendingCall>
 #include <QDBusReply>
+#include <QLoggingCategory>
 
+#include <DConfig>
 #include <DDBusSender>
 
+Q_LOGGING_CATEGORY(osdDPLog, "dde.shell.osd.display")
+
 DS_BEGIN_NAMESPACE
+
+Q_DECLARE_LOGGING_CATEGORY(osdLog)
 
 int DisPlayModeApplet::state() const
 {
@@ -56,6 +61,26 @@ void DisPlayModeApplet::sync()
     Q_EMIT planItemsChanged();
 }
 
+void DisPlayModeApplet::next()
+{
+    auto it = std::find_if(m_planItems.begin(), m_planItems.end(), [this](const DPItem *item) {
+        return m_currentPlanItem && item->key() == m_currentPlanItem->key();
+    });
+    if (it != m_planItems.end()) {
+        auto offset = it - m_planItems.begin();
+        auto nextIndex = (offset + 1) % m_planItems.count();
+        const auto item = m_planItems.at(nextIndex);
+        Q_ASSERT(item);
+        setCurrentPlanItem(item);
+        QDBusReply<void> reply = displayInter().method("SwitchMode").arg(item->mode()).arg(item->name()).call();
+        if (!reply.isValid()) {
+            qCWarning(osdDPLog) << "Failed to call SwitchMode" << reply.error();
+            return;
+        }
+        qCInfo(osdDPLog) << "next display mode" << item->name();
+    }
+}
+
 void DisPlayModeApplet::setCurrentPlanItem(DPItem *newCurrentPlanItem)
 {
     if (m_currentPlanItem == newCurrentPlanItem)
@@ -68,7 +93,7 @@ void DisPlayModeApplet::fetchPlanItems()
 {
     QDBusReply<QStringList> listOutputNames = displayInter().method("ListOutputNames").call();
     if (!listOutputNames.isValid()) {
-        qWarning() << "Failed to fetch ListOutputNames" << listOutputNames.error();
+        qCWarning(osdDPLog) << "Failed to fetch ListOutputNames" << listOutputNames.error();
         return;
     }
     auto outputNames = listOutputNames.value();
@@ -92,14 +117,14 @@ DPItem *DisPlayModeApplet::fetchCurrentPlanItem() const
     auto inter = displayInter();
     QDBusReply<QVariant> displayMode = inter.property("DisplayMode").get();
     if (!displayMode.isValid()) {
-        qWarning() << "Failed to fetch DisplayMode" << displayMode.error();
+        qCWarning(osdDPLog) << "Failed to fetch DisplayMode" << displayMode.error();
         return nullptr;
     }
     auto mode = qdbus_cast<uchar>(displayMode);
 
     QDBusReply<QVariant> primaryScreen = inter.property("Primary").get();
     if (!primaryScreen.isValid()) {
-        qWarning() << "Failed to fetch Primary" << primaryScreen.error();
+        qCWarning(osdDPLog) << "Failed to fetch Primary" << primaryScreen.error();
         return nullptr;
     }
     auto screen = qdbus_cast<QString>(primaryScreen);
@@ -162,6 +187,11 @@ QString DPItem::name() const
 QString DPItem::iconName() const
 {
     return m_iconName;
+}
+
+int DPItem::mode() const
+{
+    return m_mode;
 }
 
 QString DPItem::key() const

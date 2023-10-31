@@ -43,6 +43,7 @@ public:
     QQmlListProperty<KBLayout> layouts();
 
     Q_INVOKABLE void sync();
+    Q_INVOKABLE void next();
 
 Q_SIGNALS:
     void currentLayoutChanged();

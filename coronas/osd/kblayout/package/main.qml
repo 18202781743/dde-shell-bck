@@ -19,6 +19,9 @@ AppletItem {
     {
         if (match(osdType)) {
             Applet.sync()
+            if (control.visible) {
+                Applet.next()
+            }
             return true
         }
         return false
@@ -30,7 +33,7 @@ AppletItem {
 
     ListView {
         id: view
-        width: 600
+        width: 300
         height: contentHeight
         model: Applet.layouts
 
@@ -39,8 +42,6 @@ AppletItem {
 
             Text {
                 Layout.fillWidth: true
-                Layout.leftMargin: 68
-                Layout.topMargin: 13
                 font: D.DTK.fontManager.t4
                 Layout.alignment: Qt.AlignVCenter
                 text: model.text
